@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { pipeline, env } from '@xenova/transformers';
+import { pipeline, env } from '@huggingface/transformers';
 
 // Configure environment to allow local models from the public folder
 env.allowLocalModels = true;
