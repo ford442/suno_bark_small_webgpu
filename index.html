@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Bark WebGPU</title></head>
+<body>
+<h1>Bark WebGPU</h1>
+<p>Run <code>python -m http.server</code> in this folder.</p>
+<textarea id="t" style="width:100%" rows=3>Hello world!</textarea><br>
+<button id="b" onclick="run()">Generate</button><div id="s"></div>
+<script type="module">
+import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+env.allowLocalModels=true; env.localModelPath='models/';
+let synth;
+window.run = async () => {
+  document.getElementById('b').disabled=true;
+  document.getElementById('s').innerText="Loading...";
+  if(!synth) synth = await pipeline('text-to-speech', 'bark-small', {device:'webgpu', dtype:'q8'});
+  document.getElementById('s').innerText="Generating...";
+  const out = await synth(document.getElementById('t').value);
+  new Audio(out.url).play();
+  document.getElementById('s').innerText="Done!";
+  document.getElementById('b').disabled=false;
+}
+</script>
+</body></html>
